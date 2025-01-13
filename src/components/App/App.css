@@ -9,6 +9,7 @@
   --dark-grey: #203741;
 
   background-color: var(--dark-grey);
+  color: var(--light-grey)
 
 }
 
@@ -18,6 +19,14 @@
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+}
+
+h2 {
+  color: var(--primary-color);
+}
+
+.navbar {
+  justify-content: center;
 }
 
 button{
@@ -30,9 +39,16 @@ button{
   text-align: start;
 }
 
-.darkgrey-btn {
+.darkgrey-btn, .card{
   background-color: var(--medium-grey);
   box-shadow: 0px 5px 0px var(--medium-grey-shadow);
+}
+
+.yellow-btn {
+  background-color: var(--secondary-color);
+  box-shadow: 0px 5px 0px var(--secondary-color-shadow);
+  color: var(--dark-grey);
+  font-weight: 600;
 }
 
 .navbar-center {
@@ -47,6 +63,3 @@ button{
   padding: 2em;
 }
 
-.read-the-docs {
-  color: #888;
-}
