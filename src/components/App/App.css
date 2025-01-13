@@ -1,0 +1,52 @@
+:root {
+  --primary-color: #36cdca;
+  --secondary-color: #f6bc47;
+  --secondary-color-shadow:#CE8E14;
+  --light-grey: #B6CAD3;
+  --light-grey-shadow: #7D9AA7;
+  --medium-grey: #284551;
+  --medium-grey-shadow: #132C36;
+  --dark-grey: #203741;
+
+  background-color: var(--dark-grey);
+
+}
+
+#root {
+  background-color: var(--dark-grey);
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+button{
+  margin: 5px;
+  border-radius: var(--rounded-btn, 0.5rem);
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  text-align: start;
+}
+
+.darkgrey-btn {
+  background-color: var(--medium-grey);
+  box-shadow: 0px 5px 0px var(--medium-grey-shadow);
+}
+
+.navbar-center {
+  margin: 0px 50px;
+}
+
+.logo {
+  width: 200px;
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
