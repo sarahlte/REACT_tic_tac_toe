@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faUsers, faRobot, faPlay } from '@fortawesome/free-solid-svg-icons'
+import { Link } from 'react-router'
 
 export default function Homepage() {
     return (
@@ -17,8 +18,10 @@ export default function Homepage() {
                         </div>
                         <div className="card-actions justify-end">
                             <button className="yellow-btn">
-                                <FontAwesomeIcon icon={faPlay} className="mr-2" />
-                                Play
+                                <Link to="/game">
+                                    <FontAwesomeIcon icon={faPlay} className="mr-2" />
+                                    Play
+                                </Link>
                             </button>
                         </div>
                     </div>
@@ -34,8 +37,10 @@ export default function Homepage() {
                         </div>                        
                         <div className="card-actions justify-end">
                             <button className="yellow-btn">
-                                <FontAwesomeIcon icon={faPlay} className="mr-2" />
-                                Play
+                                <Link to="/game">
+                                    <FontAwesomeIcon icon={faPlay} className="mr-2" />
+                                    Play
+                                </Link>
                             </button>
                         </div>
                     </div>

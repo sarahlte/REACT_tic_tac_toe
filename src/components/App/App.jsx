@@ -7,7 +7,6 @@ import logo from "../../assets/tic_tac_toe.png"
 
 
 function App() {
-
 	return (
 		<>
 			<header>
@@ -60,11 +59,11 @@ function App() {
             </ul>
           </div>
           <div>
-            <button><Link to="/">Button</Link></button>
+            Welcome ___
           </div>
         </div>
 			</header>
-
+      
 			<Routes>
 				<Route path="/" element={<Homepage />} />
 				<Route path="/game" element={<Game />} />
