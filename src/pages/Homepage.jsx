@@ -1,22 +1,35 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faUsers, faRobot, faPlay } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router'
+import easy from '../assets/easy.png'
+import hard from '../assets/hard.png'
 
 export default function Homepage() {
+
     return (
-        <div>
-            <h1>Choose your game mode</h1>
-            <div className="flex">
-                <div className="card card-side bg-base-100 shadow-xl mx-4 w-96">
-                    <figure>
-                        <FontAwesomeIcon icon={faRobot} size="2xl" />
-                    </figure>
-                    <div className="card-body py-0">
-                        <h2 className="card-title">Bot mode</h2>
-                        <div className="card-actions justify-start">
-                            <p className="grow-0">Game against bot</p>
+        <div className="flex flex-col items-center">
+            <h1>Choose your game mode</h1>            
+            <ul className="max-w-md divide-y divide-gray-200 dark:divide-gray-700">
+                <li className="pb-3 sm:pb-4">
+                    <div className="flex items-center justify-start space-x-4 rtl:space-x-reverse">
+                        <FontAwesomeIcon icon={faRobot} className="mr-2 h2-icon" />
+                        <h2>Bot mode</h2>
+                    </div>
+                </li>
+                <li className="py-3 sm:py-4">
+                    <div className="flex items-center space-x-4 rtl:space-x-reverse">
+                        <div className="flex-shrink-0">
+                            <img className="w-8 h-8" src={easy} alt="easy icon"/>
                         </div>
-                        <div className="card-actions justify-end">
+                        <div className="flex-1 min-w-0">
+                            <p className="text-sm font-bold truncate">
+                                Original mode
+                            </p>
+                            <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                                Classic tic tac toe
+                            </p>
+                        </div>
+                        <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                             <button className="yellow-btn">
                                 <Link to="/game">
                                     <FontAwesomeIcon icon={faPlay} className="mr-2" />
@@ -25,27 +38,85 @@ export default function Homepage() {
                             </button>
                         </div>
                     </div>
-                </div>
-                <div className="card card-side bg-base-100 shadow-xl mx-4 w-69">
-                    <figure>
-                        <FontAwesomeIcon icon={faUsers} size="2xl"/>
-                    </figure>
-                    <div className="card-body py-0">
-                        <h2 className="card-title">Player mode</h2>
-                        <div className="card-actions justify-start">
-                            <p className="grow-0">Game against local player</p>
-                        </div>                        
-                        <div className="card-actions justify-end">
+                </li>
+                <li className="py-3 sm:py-4">
+                    <div className="flex items-center space-x-4 rtl:space-x-reverse">
+                        <div className="flex-shrink-0">
+                            <img className="w-8 h-8" src={hard} alt="hard icon"/>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <p className="text-sm font-bold truncate">
+                                Hard mode
+                            </p>
+                            <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                                3-hit tic tac toe
+                            </p>
+                        </div>
+                        <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                             <button className="yellow-btn">
                                 <Link to="/game">
                                     <FontAwesomeIcon icon={faPlay} className="mr-2" />
                                     Play
                                 </Link>
-                            </button>
+                            </button>                    
                         </div>
                     </div>
-                </div>
-            </div>
+                </li>
+            </ul>
+            <ul className="max-w-md divide-y divide-gray-200 dark:divide-gray-700 mt-4">
+                <li className="py-3 sm:py-4">
+                    <div className="flex items-center justify-start space-x-4 rtl:space-x-reverse">
+                        <FontAwesomeIcon icon={faUsers} className="mr-2 h2-icon" />
+                        <h2>Multiplayer mode</h2>
+                    </div>
+                </li>
+                <li className="pt-3 pb-0 sm:pt-4">
+                    <div className="flex items-center space-x-4 rtl:space-x-reverse">
+                        <div className="flex-shrink-0">
+                            <img className="w-8 h-8" src={easy} alt="easy icon"/>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <p className="text-sm font-bold truncate">
+                                Original mode
+                            </p>
+                            <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                                Classic tic tac toe
+                            </p>
+                        </div>
+                        <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                            <button className="yellow-btn">
+                                <Link to="/game">
+                                    <FontAwesomeIcon icon={faPlay} className="mr-2" />
+                                    Play
+                                </Link>
+                            </button>                    
+                        </div>
+                    </div>
+                </li>
+                <li className="pt-3 pb-0 sm:pt-4">
+                    <div className="flex items-center space-x-4 rtl:space-x-reverse">
+                        <div className="flex-shrink-0">
+                            <img className="w-8 h-8" src={hard} alt="hard icon"/>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                            <p className="text-sm font-bold truncate ">
+                                Hard mode
+                            </p>
+                            <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                                3-hit tic tac toe
+                            </p>
+                        </div>
+                        <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
+                            <button className="yellow-btn">
+                                <Link to="/game">
+                                    <FontAwesomeIcon icon={faPlay} className="mr-2" />
+                                    Play
+                                </Link>
+                            </button>                    
+                        </div>
+                    </div>
+                </li>
+            </ul>
         </div>
     )
 }
