@@ -4,7 +4,9 @@ import second from '../assets/2nd-place.png'
 import third from '../assets/3rd-place.png'
 
 export default function Ranking() {
-    const [players, setPlayers] = useState([{rank: 1, name:'test', bestScore:12}, {rank:2, name:'test2', bestScore: 11}, {rank: 3, name:'test3', bestScore: 8}, {rank: 4, name:'test4', bestScore: 5}, {rank:5, name:'Test5', bestScore: 3}])
+    const [players, setPlayers] = useState(localStorage.getItem('ranking')? localStorage.getItem('ranking') : JSON.stringify([{username: 'Marie', score: 4}, {username: 'Paul', score: 7}]))
+
+    const users = JSON.parse(players);
 
     function PlayersRank({rank, name, bestScore}) {
         if(rank == 1){
@@ -73,6 +75,7 @@ export default function Ranking() {
         )
     }
 
+    console.log(users)
     return (
         <div className="flex flex-col items-center">  
             <h1>Ranking</h1>  
@@ -85,8 +88,8 @@ export default function Ranking() {
                     </tr>
                 </thead>
                 <tbody>
-                    {players.map((player) => (
-                        <PlayersRank key={player.rank} rank = {player.rank} name={player.name} bestScore={player.bestScore} />
+                    {users.map((player, index) => (
+                        <PlayersRank key={index} rank={index+1} name={player.username} bestScore={player.score} />
                     ))}
                 </tbody>
             </table>
