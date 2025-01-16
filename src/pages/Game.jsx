@@ -67,16 +67,14 @@ export default function Board() {
   const [player1, setPlayer1] = useState(localStorage.getItem('player1') ? localStorage.getItem('player1') : null)
   const [player2, setPlayer2] = useState(localStorage.getItem('player2') ? localStorage.getItem('player2') : null)
   const [game, setGame]= useState(localStorage.getItem('mode') && localStorage.getItem('difficulty') ? {mode: localStorage.getItem('mode'), difficulty: localStorage.getItem('difficulty')} : {mode: null, difficulty: null});
-  const [ranking, setRanking] = useState(localStorage.getItem('ranking')? localStorage.getItem('ranking') : []);
-
-  //setRanking(JSON.stringify(ranking));
+  const [ranking, setRanking] = useState(localStorage.getItem('ranking')? localStorage.getItem('ranking') : JSON.stringify([{username: 'Marie', score: 7}, {username: 'Paul', score: 4}]));
 
   useEffect(()=> {
     localStorage.setItem('ranking', ranking);
   }, [ranking])
 
   useEffect(()=> {
-    player1 != null ? localStorage.setItem('player', player1) : null;
+    player1 != null ? localStorage.setItem('player1', player1) : null;
   }, [player1])
 
   useEffect(()=> {
@@ -95,9 +93,6 @@ export default function Board() {
     ties != null ? localStorage.setItem('ties', ties): null;
   }, [ties])
 
-  useEffect(()=> {
-    localStorage.setItem('board', squares);
-  }, [squares])
 
   function reset(){
     setXIsNext(true);
@@ -113,31 +108,28 @@ export default function Board() {
     if (squares[i] || calculateWinner(squares) || isFull(squares)) {
       return;
     }
-    const nextSquares = squares;
+
+    const newSquares = squares.map((square, index) => {
+      if (index === i) return xIsNext ? "X" : "O";
+      return square;
+    });
+
     if (xIsNext) {
-      nextSquares[i] = "X";
-      if(game.mode == 'bot'){
+      if (game.mode == "bot" && newSquares.filter((square)=> square == null).length > 1) {
         let n = Math.floor(Math.random() * 8);
-        while (nextSquares[n] != null){
+        while (newSquares[n] != null) {
           n = Math.floor(Math.random() * 8);
         }
-        nextSquares[n] = "O"
+        newSquares[n] = "O";
       }
-    } else {
-      nextSquares[i] = "O";
     }
-    setSquares(nextSquares);
-    game.mode == 'multiplayer' ? setXIsNext(!xIsNext) : null;
 
-    let board = [];
-    for(let i = 0; i < squares.length; i++){
-      if(squares[i] == null){
-        board.push('')
-      } else {
-        board.push(squares[i])
-      }
+    setSquares(newSquares);
+    localStorage.setItem("board", newSquares);
+
+    if ("multiplayer" === game.mode) {
+      setXIsNext(!xIsNext);
     }
-    localStorage.setItem('board', squares);
   }
 
   function setPlayersName(e){
@@ -147,13 +139,45 @@ export default function Board() {
       const player2 = document.querySelector('#player2').value;
       if(player2 != ''){
         setPlayer2(player2);
+      } else {
+        setPlayer2('P2');
       }
     } else {
-      setPlayer2('CPU')
+      setPlayer2('CPU');
     }
     if(player1 != ''){
       setPlayer1(player1);
+    } else if (game.mode == 'multiplayer') {
+      setPlayer1("P1");
     }
+  }
+
+  function setNewRanking(){
+    const rankingParse = JSON.parse(ranking);
+    let newRanking = [];
+    for(let i = 0; i < rankingParse.length; i++){
+      if(parseInt(p1Victory) < rankingParse[i].score && parseInt(p1Victory) > rankingParse[i+1]){
+        newRanking.push(rankingParse[i]);
+        newRanking.push({username: player1, score: parseInt(p1Victory)});
+      }
+      else if (parseInt(p1Victory) == rankingParse[i].score && player1 != rankingParse[i].username) {
+        newRanking.push(rankingParse[i]);
+        newRanking.push({username: player1, score: parseInt(p1Victory)});
+      } 
+      else if (i == 0 && parseInt(p1Victory) > rankingParse[i].score){
+        newRanking.push({username: player1, score: parseInt(p1Victory)});
+        newRanking.push(rankingParse[i]);
+      } 
+      else if (i == rankingParse.length-1 && parseInt(p1Victory) < rankingParse[i].score) {
+        newRanking.push(rankingParse[i]);
+        newRanking.push({username: player1, score: parseInt(p1Victory)});
+      }
+      else {
+        newRanking.push(rankingParse[i]);
+      }
+    }
+    console.log(newRanking);
+    return JSON.stringify(newRanking)
   }
 
   const winner = calculateWinner(squares);
@@ -170,9 +194,23 @@ export default function Board() {
       player = <img src={cross} alt="" className='w-4 mr-2' />;
     } 
     else {
-      nextP2 = parseInt(nextP2) + 1;
-      player = <img src={circle} alt="" className='w-4 mr-2'/>;
-      setTimeout(()=>{setSquares(Array(9).fill(null))}, 5000);
+      if(game.mode == 'bot'){
+        if(p1Victory > 0){
+          localStorage.setItem('ranking', setNewRanking());
+        }
+         setTimeout(()=>{
+           setTies(0);
+           setP1(0);
+           setP2(0);
+           setSquares(Array(9).fill(null));
+         }, 5000);
+
+      } else {
+        nextP2 = parseInt(nextP2) + 1;
+        player = <img src={circle} alt="" className='w-4 mr-2'/>;
+        setTimeout(()=>{setSquares(Array(9).fill(null))}, 5000);
+      }
+
     }
   } else if (tie){
     nextTies = parseInt(nextTies) + 1;
@@ -190,9 +228,6 @@ export default function Board() {
         setSquares(Array(9).fill(null))
       }, 2000)
   }
-
-  const rankingJsonParse = JSON.parse(ranking);
-  console.log(squares);
 
   if(game.mode == 'multiplayer'){
     if(player1 && player2){
@@ -378,3 +413,4 @@ function isFull(squares){
   }
   return true;
 }
+
