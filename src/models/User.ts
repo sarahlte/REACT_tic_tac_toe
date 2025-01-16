@@ -1,1 +1,0 @@
-export type User = {username: string, best: number, historic: string[]};

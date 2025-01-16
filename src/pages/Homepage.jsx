@@ -3,8 +3,28 @@ import { faUsers, faRobot, faPlay } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router'
 import easy from '../assets/easy.png'
 import hard from '../assets/hard.png'
+import { useEffect, useState } from "react"
 
 export default function Homepage() {
+    const[game, setGame] = useState({mode: localStorage.getItem('mode') ? localStorage.getItem('mode') : null, difficulty: localStorage.getItem('difficulty')? localStorage.getItem('difficulty') : null})
+
+    useEffect(() => {
+        const mode = localStorage.getItem('mode');
+        const difficulty = localStorage.getItem('difficulty');
+
+        mode && difficulty ? setGame({mode: mode, difficulty: difficulty}) : setGame({mode: null, difficulty: null})
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem('mode', game.mode);
+    }, [game])
+
+    useEffect(() => {
+        localStorage.setItem('difficulty', game.difficulty);
+    }, [game.difficulty])
+
+
+
 
     return (
         <div className="flex flex-col items-center">
@@ -31,7 +51,7 @@ export default function Homepage() {
                         </div>
                         <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                             <button className="yellow-btn">
-                                <Link to="/game">
+                                <Link to="/game" onClick={()=> setGame({mode: 'bot', difficulty:'easy'})}>
                                     <FontAwesomeIcon icon={faPlay} className="mr-2" />
                                     Play
                                 </Link>
@@ -54,7 +74,7 @@ export default function Homepage() {
                         </div>
                         <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                             <button className="yellow-btn">
-                                <Link to="/game">
+                                <Link to="/game" onClick={() => setGame({mode: 'bot', difficulty:'hard'})}>
                                     <FontAwesomeIcon icon={faPlay} className="mr-2" />
                                     Play
                                 </Link>
@@ -85,7 +105,7 @@ export default function Homepage() {
                         </div>
                         <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                             <button className="yellow-btn">
-                                <Link to="/game">
+                                <Link to="/game" onClick={() => setGame({mode: 'multiplayer', difficulty:'easy'})}>
                                     <FontAwesomeIcon icon={faPlay} className="mr-2" />
                                     Play
                                 </Link>
@@ -108,7 +128,7 @@ export default function Homepage() {
                         </div>
                         <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                             <button className="yellow-btn">
-                                <Link to="/game">
+                                <Link to="/game" onClick={ () => setGame({mode: 'multiplayer', difficulty:'hard'})}>
                                     <FontAwesomeIcon icon={faPlay} className="mr-2" />
                                     Play
                                 </Link>

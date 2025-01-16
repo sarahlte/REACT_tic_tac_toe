@@ -22,9 +22,6 @@
 
 h1 {
   font-size: 24px;
-  font-weight: bold;
-  text-transform: uppercase;
-  margin: 25px 0;
 }
 
 h2, .h2-icon {
@@ -94,5 +91,23 @@ button, .secondary-score, .tie-score, .primary-score, .status {
 
 .card {
   padding: 2em;
+}
+
+.player1-label {
+  color: var(--primary-color);
+  text-transform: uppercase;
+}
+
+.player2-label {
+  color: var(--secondary-color);
+  text-transform: uppercase;
+}
+
+.player1-input:focus {
+  border-color: var(--primary-color);
+}
+
+.player2-input:focus {
+  border-color: var(--secondary-color);
 }
 
