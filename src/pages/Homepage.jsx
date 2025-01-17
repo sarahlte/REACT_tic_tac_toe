@@ -9,19 +9,9 @@ export default function Homepage() {
     const[game, setGame] = useState({mode: localStorage.getItem('mode') ? localStorage.getItem('mode') : null, difficulty: localStorage.getItem('difficulty')? localStorage.getItem('difficulty') : null})
 
     useEffect(() => {
-        const mode = localStorage.getItem('mode');
-        const difficulty = localStorage.getItem('difficulty');
-
-        mode && difficulty ? setGame({mode: mode, difficulty: difficulty}) : setGame({mode: null, difficulty: null})
-    }, []);
-
-    useEffect(() => {
         localStorage.setItem('mode', game.mode);
-    }, [game])
-
-    useEffect(() => {
         localStorage.setItem('difficulty', game.difficulty);
-    }, [game.difficulty])
+    }, [game])
 
     return (
         <div className="flex flex-col items-center">
@@ -50,12 +40,7 @@ export default function Homepage() {
                             <button className="yellow-btn">
                                 <Link to="/game" onClick={() => {
                                     setGame({mode: 'bot', difficulty:'easy'});
-                                    localStorage.removeItem('board');
-                                    localStorage.removeItem('player1');
-                                    localStorage.removeItem('player2');
-                                    localStorage.removeItem('ties');
-                                    localStorage.removeItem('victory1');
-                                    localStorage.removeItem('victory2');
+                                    clearStorage();
                                 }}>
                                     <FontAwesomeIcon icon={faPlay} className="mr-2" />
                                     Play
@@ -81,12 +66,7 @@ export default function Homepage() {
                             <button className="yellow-btn">
                                 <Link to="/game" onClick={() => {
                                     setGame({mode: 'bot', difficulty:'hard'});
-                                    localStorage.removeItem('board');
-                                    localStorage.removeItem('player1');
-                                    localStorage.removeItem('player2');
-                                    localStorage.removeItem('ties');
-                                    localStorage.removeItem('victory1');
-                                    localStorage.removeItem('victory2');
+                                    clearStorage();
                                 }}>
                                     <FontAwesomeIcon icon={faPlay} className="mr-2" />
                                     Play
@@ -120,12 +100,7 @@ export default function Homepage() {
                             <button className="yellow-btn">
                                 <Link to="/game" onClick={() => {
                                     setGame({mode: 'multiplayer', difficulty:'easy'});
-                                    localStorage.removeItem('board');
-                                    localStorage.removeItem('player1');
-                                    localStorage.removeItem('player2');
-                                    localStorage.removeItem('ties');
-                                    localStorage.removeItem('victory1');
-                                    localStorage.removeItem('victory2');
+                                    clearStorage();
                                 }}>
                                     <FontAwesomeIcon icon={faPlay} className="mr-2" />
                                     Play
@@ -151,12 +126,7 @@ export default function Homepage() {
                             <button className="yellow-btn">
                                 <Link to="/game" onClick={() => {
                                     setGame({mode: 'multiplayer', difficulty:'hard'});
-                                    localStorage.removeItem('board');
-                                    localStorage.removeItem('player1');
-                                    localStorage.removeItem('player2');
-                                    localStorage.removeItem('ties');
-                                    localStorage.removeItem('victory1');
-                                    localStorage.removeItem('victory2');
+                                    clearStorage();
                                     }}>
                                     <FontAwesomeIcon icon={faPlay} className="mr-2" />
                                     Play
@@ -168,4 +138,15 @@ export default function Homepage() {
             </ul>
         </div>
     )
+}
+
+function clearStorage(){
+    localStorage.removeItem('board');
+    localStorage.removeItem('player1');
+    localStorage.removeItem('player2');
+    localStorage.removeItem('ties');
+    localStorage.removeItem('victory1');
+    localStorage.removeItem('victory2');
+    localStorage.removeItem('p1moves');
+    localStorage.removeItem('p2moves');
 }
