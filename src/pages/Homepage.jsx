@@ -23,9 +23,6 @@ export default function Homepage() {
         localStorage.setItem('difficulty', game.difficulty);
     }, [game.difficulty])
 
-
-
-
     return (
         <div className="flex flex-col items-center">
             <h1>Choose your game mode</h1>            
@@ -51,7 +48,15 @@ export default function Homepage() {
                         </div>
                         <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                             <button className="yellow-btn">
-                                <Link to="/game" onClick={()=> setGame({mode: 'bot', difficulty:'easy'})}>
+                                <Link to="/game" onClick={() => {
+                                    setGame({mode: 'bot', difficulty:'easy'});
+                                    localStorage.removeItem('board');
+                                    localStorage.removeItem('player1');
+                                    localStorage.removeItem('player2');
+                                    localStorage.removeItem('ties');
+                                    localStorage.removeItem('victory1');
+                                    localStorage.removeItem('victory2');
+                                }}>
                                     <FontAwesomeIcon icon={faPlay} className="mr-2" />
                                     Play
                                 </Link>
@@ -74,7 +79,15 @@ export default function Homepage() {
                         </div>
                         <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                             <button className="yellow-btn">
-                                <Link to="/game" onClick={() => setGame({mode: 'bot', difficulty:'hard'})}>
+                                <Link to="/game" onClick={() => {
+                                    setGame({mode: 'bot', difficulty:'hard'});
+                                    localStorage.removeItem('board');
+                                    localStorage.removeItem('player1');
+                                    localStorage.removeItem('player2');
+                                    localStorage.removeItem('ties');
+                                    localStorage.removeItem('victory1');
+                                    localStorage.removeItem('victory2');
+                                }}>
                                     <FontAwesomeIcon icon={faPlay} className="mr-2" />
                                     Play
                                 </Link>
@@ -105,7 +118,15 @@ export default function Homepage() {
                         </div>
                         <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                             <button className="yellow-btn">
-                                <Link to="/game" onClick={() => setGame({mode: 'multiplayer', difficulty:'easy'})}>
+                                <Link to="/game" onClick={() => {
+                                    setGame({mode: 'multiplayer', difficulty:'easy'});
+                                    localStorage.removeItem('board');
+                                    localStorage.removeItem('player1');
+                                    localStorage.removeItem('player2');
+                                    localStorage.removeItem('ties');
+                                    localStorage.removeItem('victory1');
+                                    localStorage.removeItem('victory2');
+                                }}>
                                     <FontAwesomeIcon icon={faPlay} className="mr-2" />
                                     Play
                                 </Link>
@@ -128,7 +149,15 @@ export default function Homepage() {
                         </div>
                         <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">
                             <button className="yellow-btn">
-                                <Link to="/game" onClick={ () => setGame({mode: 'multiplayer', difficulty:'hard'})}>
+                                <Link to="/game" onClick={() => {
+                                    setGame({mode: 'multiplayer', difficulty:'hard'});
+                                    localStorage.removeItem('board');
+                                    localStorage.removeItem('player1');
+                                    localStorage.removeItem('player2');
+                                    localStorage.removeItem('ties');
+                                    localStorage.removeItem('victory1');
+                                    localStorage.removeItem('victory2');
+                                    }}>
                                     <FontAwesomeIcon icon={faPlay} className="mr-2" />
                                     Play
                                 </Link>
