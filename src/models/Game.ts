@@ -1,1 +1,0 @@
-export type Game = {mode: string, difficulty: string, inProgress: {users: string[], board: string[]}}

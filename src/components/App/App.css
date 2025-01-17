@@ -156,3 +156,13 @@ tbody > tr {
   border-top: 1px solid var(--light-grey)!important;
   border-bottom: unset;
 }
+
+.primary-filter > img, .secondary-filter > img{
+  filter: brightness(0) saturate(100%) invert(14%) sepia(6%) saturate(5071%) hue-rotate(154deg) brightness(86%) contrast(80%)!important;
+}
+.primary-filter {
+  background-color: var(--primary-color);
+}
+.secondary-filter {
+  background-color: var(--secondary-color);
+}
