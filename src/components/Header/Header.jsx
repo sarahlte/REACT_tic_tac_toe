@@ -4,7 +4,7 @@ import logo from "../../assets/tic_tac_toe.png"
 function Header() {
     return (
         <>
-            <div className="navbar">
+            <header className="navbar">
                 <div >
                 <div className="dropdown">
                     {/* Menu dropdown */}
@@ -52,7 +52,7 @@ function Header() {
                     </li>
                 </ul>
                 </div>
-            </div>      
+            </header>      
         </>
     )
 }
