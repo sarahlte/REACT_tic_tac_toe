@@ -8,21 +8,21 @@ import circle from "../assets/circle.svg"
 function Square({ value, onSquareClick }) {
   if (value == 'X'){
       return (
-        <button className="square darkgrey-btn w-28 h-28" onClick={onSquareClick}>
+        <div className="square darkgrey-btn w-28 h-28" onClick={onSquareClick}>
           <img src={cross} alt="X" />
-        </button>
+        </div>
       );
   } else if (value == 'O') {
     return (
-      <button className="square darkgrey-btn w-28 h-28" onClick={onSquareClick}>
+      <div className="square darkgrey-btn w-28 h-28" onClick={onSquareClick}>
         <img src={circle} alt="O" />
-      </button>
+      </div>
     );
   } else {
     return (
-      <button className="square darkgrey-btn w-28 h-28" onClick={onSquareClick}>
+      <div className="square darkgrey-btn w-28 h-28" onClick={onSquareClick}>
         {value}
-      </button>
+      </div>
     );
   }
 
@@ -31,67 +31,27 @@ function Square({ value, onSquareClick }) {
 
 export default function Board() {
   const [xIsNext, setXIsNext] = useState(true);
-  const [squares, setSquares] = useState(() => {
-    const board = localStorage.getItem('board');
-    if(board){
-      let squaresBoard = []
-      for(let i = 0; i < board.length; i++){
-        if(board[i-1] == 'X' && board[i] == ','  && i != board.length - 1){
-          squaresBoard.push('X')
-        } 
-        else if (board[i-1] == 'O' && board[i] == ',' && i != board.length - 1) {
-          squaresBoard.push('O')
-          
-        } 
-        else if (board[i] == 'X' && i == board.length - 1) {
-          squaresBoard.push('X')
-        }
-        else if (board[i] == 'O' && i == board.length - 1) {
-          squaresBoard.push('O')
-        }
-        else if (board[i] == ','){
-          squaresBoard.push(null)
-        } 
-      }
-      if(squaresBoard.length != 9){
-        return (Array(9).fill(null))
-      }
-      return squaresBoard
-    } else {
-      return (Array(9).fill(null))
-    }
-  });
+  const [squares, setSquares] = useState(localStorage.getItem('board')? JSON.parse(localStorage.getItem('board')) : Array(9).fill(null));
   const [ties, setTies] = useState(localStorage.getItem('ties') ? localStorage.getItem('ties') : 0);
   const [p1Victory, setP1] = useState(localStorage.getItem('victory1') ? localStorage.getItem('victory1') : 0);
+  const [p1Moves, setP1Moves] = useState(localStorage.getItem('p1moves') ? localStorage.getItem('p1moves') : JSON.stringify([]));
   const [p2Victory, setP2] = useState(localStorage.getItem('victory2') ? localStorage.getItem('victory2') : 0);
+  const [p2Moves, setP2Moves] = useState(localStorage.getItem('p2moves') ? localStorage.getItem('p2moves') : JSON.stringify([]));
   const [player1, setPlayer1] = useState(localStorage.getItem('player1') ? localStorage.getItem('player1') : null)
   const [player2, setPlayer2] = useState(localStorage.getItem('player2') ? localStorage.getItem('player2') : null)
   const [game, setGame]= useState(localStorage.getItem('mode') && localStorage.getItem('difficulty') ? {mode: localStorage.getItem('mode'), difficulty: localStorage.getItem('difficulty')} : {mode: null, difficulty: null});
-  const [ranking, setRanking] = useState(localStorage.getItem('ranking')? localStorage.getItem('ranking') : JSON.stringify([{username: 'Marie', score: 7}, {username: 'Paul', score: 4}]));
+  const [ranking, setRanking] = useState(localStorage.getItem('ranking')? localStorage.getItem('ranking') : JSON.stringify([{username: 'Kappa', score: 12}, {username: 'Pierre', score: 9},{username: 'Paul', score: 7}, {username: 'Marie', score: 6}, {username: 'Sarah', score: 3}, {username: 'Tom', score: 1}]));
 
   useEffect(()=> {
     localStorage.setItem('ranking', ranking);
-  }, [ranking])
-
-  useEffect(()=> {
     player1 != null ? localStorage.setItem('player1', player1) : null;
-  }, [player1])
-
-  useEffect(()=> {
     player2 != null ? localStorage.setItem('player2', player2) : null;
-  }, [player2])
-
-  useEffect(()=> {
-    p2Victory != null ? localStorage.setItem('victory2', p2Victory): null;
-  }, [p2Victory])
-
-  useEffect(()=> {
     p1Victory != null ? localStorage.setItem('victory1', p1Victory): null;
-  }, [p1Victory])
-
-  useEffect(()=> {
+    p1Moves != null ? localStorage.setItem('p1moves', p1Moves): null;
+    p2Victory != null ? localStorage.setItem('victory2', p2Victory): null;
+    p2Moves != null ? localStorage.setItem('p2moves', p2Moves): null;
     ties != null ? localStorage.setItem('ties', ties): null;
-  }, [ties])
+  }, [ranking, player1, player2, p1Victory, p1Moves, p2Victory, p2Moves,ties])
 
 
   function reset(){
@@ -100,8 +60,18 @@ export default function Board() {
     setTies(0);
     setP1(0);
     setP2(0);
+    setP1Moves(JSON.stringify([]))
+    setP2Moves(JSON.stringify([]))
     setPlayer1(null);
     setPlayer2(null);
+    localStorage.removeItem('board');
+    localStorage.removeItem('ties');
+    localStorage.removeItem('victory1');
+    localStorage.removeItem('victory2');
+    localStorage.removeItem('player1');
+    localStorage.removeItem('player2');
+    localStorage.removeItem('p1moves');
+    localStorage.removeItem('p2moves');
   }
 
   function handleClick(i) {
@@ -114,6 +84,7 @@ export default function Board() {
       return square;
     });
 
+
     if (xIsNext) {
       if (game.mode == "bot" && newSquares.filter((square)=> square == null).length > 1) {
         let n = Math.floor(Math.random() * 8);
@@ -121,11 +92,49 @@ export default function Board() {
           n = Math.floor(Math.random() * 8);
         }
         newSquares[n] = "O";
+        if(game.difficulty == 'hard'){
+          let movesP2 = JSON.parse(p2Moves);
+          if(movesP2.length === 3){
+            const firstMove = movesP2[0]
+            newSquares[firstMove]= null
+            movesP2.shift();
+            movesP2.push(n)
+            setP2Moves(JSON.stringify(movesP2))
+          } else {
+            movesP2.push(n)
+            setP2Moves(JSON.stringify(movesP2))
+          }
+        }
+      }
+      if (game.difficulty == 'hard'){
+        let movesP1 = JSON.parse(p1Moves)
+        if(movesP1.length === 3){
+          const firstMove1 = movesP1[0]
+          newSquares[firstMove1] = null;
+          movesP1.shift();
+          movesP1.push(i);
+          setP1Moves(JSON.stringify(movesP1));
+        } else {
+          movesP1.push(i);
+          setP1Moves(JSON.stringify(movesP1));
+        }
+      }
+    } 
+    else if (game.difficulty == 'hard' && !xIsNext){
+      let movesP2 = JSON.parse(p2Moves)
+      if(movesP2.length === 3){
+        const firstMove2 = movesP2[0]
+        newSquares[firstMove2] = null;
+        movesP2.shift();
+        movesP2.push(i)
+        setP2Moves(JSON.stringify(movesP2))
+      } else {
+        movesP2.push(i)
+        setP2Moves(JSON.stringify(movesP2))
       }
     }
-
     setSquares(newSquares);
-    localStorage.setItem("board", newSquares);
+    localStorage.setItem("board", JSON.stringify(newSquares));
 
     if ("multiplayer" === game.mode) {
       setXIsNext(!xIsNext);
@@ -176,8 +185,8 @@ export default function Board() {
         newRanking.push(rankingParse[i]);
       }
     }
-    console.log(newRanking);
-    return JSON.stringify(newRanking)
+    newRanking = JSON.stringify(newRanking)
+    setRanking(newRanking)
   }
 
   const winner = calculateWinner(squares);
@@ -196,14 +205,15 @@ export default function Board() {
     else {
       if(game.mode == 'bot'){
         if(p1Victory > 0){
-          localStorage.setItem('ranking', setNewRanking());
-        }
-         setTimeout(()=>{
-           setTies(0);
-           setP1(0);
-           setP2(0);
-           setSquares(Array(9).fill(null));
-         }, 5000);
+          //setNewRanking()
+        } 
+        setTimeout(()=>{
+          setNewRanking()
+          setTies(0);
+          setP1(0);
+          setP2(0);
+          setSquares(Array(9).fill(null));
+        }, 5000);
 
       } else {
         nextP2 = parseInt(nextP2) + 1;
@@ -249,21 +259,24 @@ export default function Board() {
               </div>
     
           </div>
-          <div className="board-row">
-            <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
-            <Square value={squares[1]} onSquareClick={() => handleClick(1)} />        
-            <Square value={squares[2]} onSquareClick={() => handleClick(2)}/>
+          <div className='board'>
+            <div className="board-row">
+              <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
+              <Square value={squares[1]} onSquareClick={() => handleClick(1)} />        
+              <Square value={squares[2]} onSquareClick={() => handleClick(2)}/>
+            </div>
+            <div className="board-row">
+              <Square value={squares[3]} onSquareClick={() => handleClick(3)}/>
+              <Square value={squares[4]} onSquareClick={() => handleClick(4)}/>
+              <Square value={squares[5]} onSquareClick={() => handleClick(5)}/>
+            </div>
+            <div className="board-row">
+              <Square value={squares[6]} onSquareClick={() => handleClick(6)}/>
+              <Square value={squares[7]} onSquareClick={() => handleClick(7)}/>
+              <Square value={squares[8]} onSquareClick={() => handleClick(8)}/>
+            </div>
           </div>
-          <div className="board-row">
-            <Square value={squares[3]} onSquareClick={() => handleClick(3)}/>
-            <Square value={squares[4]} onSquareClick={() => handleClick(4)}/>
-            <Square value={squares[5]} onSquareClick={() => handleClick(5)}/>
-          </div>
-          <div className="board-row">
-            <Square value={squares[6]} onSquareClick={() => handleClick(6)}/>
-            <Square value={squares[7]} onSquareClick={() => handleClick(7)}/>
-            <Square value={squares[8]} onSquareClick={() => handleClick(8)}/>
-          </div>
+
           <div className='game-info flex justify-center items-center mt-5'>
             <div className='div primary-score w-28'>
               <p className='text-center'>X ({player1})</p>
@@ -330,20 +343,22 @@ export default function Board() {
               </div>
     
           </div>
-          <div className="board-row">
-            <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
-            <Square value={squares[1]} onSquareClick={() => handleClick(1)} />        
-            <Square value={squares[2]} onSquareClick={() => handleClick(2)}/>
-          </div>
-          <div className="board-row">
-            <Square value={squares[3]} onSquareClick={() => handleClick(3)}/>
-            <Square value={squares[4]} onSquareClick={() => handleClick(4)}/>
-            <Square value={squares[5]} onSquareClick={() => handleClick(5)}/>
-          </div>
-          <div className="board-row">
-            <Square value={squares[6]} onSquareClick={() => handleClick(6)}/>
-            <Square value={squares[7]} onSquareClick={() => handleClick(7)}/>
-            <Square value={squares[8]} onSquareClick={() => handleClick(8)}/>
+          <div className='board'>
+            <div className="board-row">
+              <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
+              <Square value={squares[1]} onSquareClick={() => handleClick(1)} />        
+              <Square value={squares[2]} onSquareClick={() => handleClick(2)}/>
+            </div>
+            <div className="board-row">
+              <Square value={squares[3]} onSquareClick={() => handleClick(3)}/>
+              <Square value={squares[4]} onSquareClick={() => handleClick(4)}/>
+              <Square value={squares[5]} onSquareClick={() => handleClick(5)}/>
+            </div>
+            <div className="board-row">
+              <Square value={squares[6]} onSquareClick={() => handleClick(6)}/>
+              <Square value={squares[7]} onSquareClick={() => handleClick(7)}/>
+              <Square value={squares[8]} onSquareClick={() => handleClick(8)}/>
+            </div>
           </div>
           <div className='game-info flex justify-center items-center mt-5'>
             <div className='div primary-score w-28'>
