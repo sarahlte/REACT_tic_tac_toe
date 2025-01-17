@@ -61,6 +61,12 @@ button, .secondary-score, .tie-score, .primary-score, .status {
   box-shadow: 0px 5px 0px var(--medium-grey-shadow);
 }
 
+.darkgrey-btn:hover{
+  background-color:#223a44;
+  color: var(--primary-color);
+}
+
+
 .lightgrey-btn, .card{
   background-color: var(--light-grey);
   box-shadow: 0px 5px 0px var(--light-grey-shadow);
@@ -72,6 +78,10 @@ button, .secondary-score, .tie-score, .primary-score, .status {
   box-shadow: 0px 5px 0px var(--secondary-color-shadow);
   color: var(--dark-grey);
   font-weight: 600;
+}
+
+.yellow-btn:hover {
+  background-color:#d7a43f;
 }
 
 .primary-score {
@@ -118,11 +128,6 @@ button, .secondary-score, .tie-score, .primary-score, .status {
 .player2-input:focus {
   border-color: var(--secondary-color);
 }
-
-/* img {
-  display: initial;
-  vertical-align: -moz-middle-with-baseline;
-} */
 
 .board-row{
   display: flex;
