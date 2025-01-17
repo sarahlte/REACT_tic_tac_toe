@@ -4,7 +4,7 @@ import second from '../assets/2nd-place.png'
 import third from '../assets/3rd-place.png'
 
 export default function Ranking() {
-    const [players, setPlayers] = useState(localStorage.getItem('ranking')? localStorage.getItem('ranking') : JSON.stringify([{username: 'Marie', score: 4}, {username: 'Paul', score: 7}]))
+    const [players, setPlayers] = useState(localStorage.getItem('ranking')? localStorage.getItem('ranking') : JSON.stringify([{username: 'Kappa', score: 12}, {username: 'Pierre', score: 9},{username: 'Paul', score: 7}, {username: 'Marie', score: 6}, {username: 'Sarah', score: 3}, {username: 'Tom', score: 1}]))
 
     const users = JSON.parse(players);
 
@@ -83,7 +83,7 @@ export default function Ranking() {
                 <thead>
                     <tr>
                         <th className='flex justify-center'>Rank</th>
-                        <th>User name</th>
+                        <th>Username</th>
                         <th className='flex justify-center'>Score</th>
                     </tr>
                 </thead>
