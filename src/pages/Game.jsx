@@ -65,8 +65,8 @@ export default function Game() {
 
     const isWinner = calculateWinner(newSquares);
 
-    if (xIsNext && !isWinner) {
-      if (game.mode == "bot" && newSquares.filter((square)=> square == null).length > 1) {
+    if (xIsNext) {
+      if (game.mode == "bot" && newSquares.filter((square)=> square == null).length > 1 && !isWinner) {
         let n = Math.floor(Math.random() * 8);
         while (newSquares[n] != null) {
           n = Math.floor(Math.random() * 8);
@@ -77,12 +77,19 @@ export default function Game() {
           if(movesP2.length === 3){
             const firstMove = movesP2[0]
             newSquares[firstMove]= null
+            document.querySelector(`#a${movesP2[0]}`).classList.remove('last-round')
             movesP2.shift();
             movesP2.push(n)
             setP2Moves(JSON.stringify(movesP2))
+            const lastRound = document.querySelector(`#a${movesP2[0]}`);
+            lastRound.classList.add('last-round');
           } else {
             movesP2.push(n)
             setP2Moves(JSON.stringify(movesP2))
+            if(movesP2.length === 3){
+              const lastRound = document.querySelector(`#a${movesP2[0]}`);
+              lastRound.classList.add('last-round');
+            }
           }
         }
       }
@@ -91,12 +98,19 @@ export default function Game() {
         if(movesP1.length === 3){
           const firstMove1 = movesP1[0]
           newSquares[firstMove1] = null;
+          document.querySelector(`#a${firstMove1}`).classList.remove('last-round');
           movesP1.shift();
           movesP1.push(i);
           setP1Moves(JSON.stringify(movesP1));
+          const lastRound = document.querySelector(`#a${movesP1[0]}`);
+          lastRound.classList.add('last-round');
         } else {
           movesP1.push(i);
           setP1Moves(JSON.stringify(movesP1));
+          if(movesP1.length === 3){
+            const lastRound = document.querySelector(`#a${movesP1[0]}`);
+            lastRound.classList.add('last-round');
+          }
         }
       }
     } 
@@ -105,12 +119,19 @@ export default function Game() {
       if(movesP2.length === 3){
         const firstMove2 = movesP2[0]
         newSquares[firstMove2] = null;
+        document.querySelector(`#a${firstMove2}`).classList.remove('last-round');
         movesP2.shift();
         movesP2.push(i)
         setP2Moves(JSON.stringify(movesP2))
+        const lastRound = document.querySelector(`#a${movesP2[0]}`);
+        lastRound.classList.add('last-round');
       } else {
         movesP2.push(i)
         setP2Moves(JSON.stringify(movesP2))
+        if(movesP2.length === 3){
+          const lastRound = document.querySelector(`#a${movesP2[0]}`);
+          lastRound.classList.add('last-round');
+        }
       }
     }
     setSquares(newSquares);
@@ -151,7 +172,6 @@ export default function Game() {
   let nextTies = ties;
   if (winner) {
     status = 'WINNER';
-    console.log('winner: '+winner)
     if (winner == 'VX' || winner == 'X') {
       nextP1 = parseInt(nextP1) + 1;
       player = <img src={cross} alt="" className='w-4 mr-2' />;
@@ -160,25 +180,16 @@ export default function Game() {
       player = <img src={circle} alt="" className='w-4 mr-2'/>;
       if(game.mode == 'bot'){
         if(p1Victory > 0){
-          console.log(p1Victory)
           newRanking(player1, p1Victory)
-          setTimeout(()=> {
-            console.log('test')
-            setP1(0);
-            setP2(0);
-            setTies(0);
-            setSquares(Array(9).fill(null))
-          }, 2000)
-        } 
-        setTimeout(()=> {
           setP1(0);
-          setP2(0);
-          setTies(0);
-          setSquares(Array(9).fill(null))
-        }, 2000)
+          console.log(p1Victory);
+        } 
+        nextP1 = 0
+        nextP2 = 0
+        nextTies = 0
       } else {
         nextP2 = parseInt(nextP2) + 1;
-        setTimeout(()=>{setSquares(Array(9).fill(null))}, 5000);
+        setTimeout(()=>{console.log('test'); setSquares(Array(9).fill(null))}, 5000);
       }
     }
     winnerBoard(squares);
@@ -191,12 +202,19 @@ export default function Game() {
     player = xIsNext ? <img src={cross} alt="" className='w-4 mr-2' /> : <img src={circle} alt="" className='w-4 mr-2'/>
   }
   if(winner || tie){
-      setTimeout(()=> {
-        setP1(nextP1);
-        setP2(nextP2);
-        setTies(nextTies);
-        setSquares(Array(9).fill(null))
-      }, 2000)
+    console.log(document.querySelectorAll('.square'))
+    const allSquares = document.querySelectorAll('.square')
+    allSquares.forEach((square) => {square.classList.remove('last-round');})
+    setTimeout(()=> {
+      setP1(nextP1);
+      setP2(nextP2);
+      setTies(nextTies);
+      if(game.difficulty == 'hard'){
+        setP1Moves(JSON.stringify([]))
+        setP2Moves(JSON.stringify([]))
+      }
+      setSquares(Array(9).fill(null))
+    }, 2000)
   }
 
   if(game.mode == 'multiplayer'){
