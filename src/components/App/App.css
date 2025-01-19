@@ -166,3 +166,9 @@ tbody > tr {
 .secondary-filter {
   background-color: var(--secondary-color);
 }
+
+.last-round {
+  background: linear-gradient(-45deg, var(--medium-grey) 25%, var(--medium-grey-shadow) 25%, var(--medium-grey-shadow) 50%, var(--medium-grey) 50%, var(--medium-grey) 75%, 
+  var(--medium-grey-shadow) 75%, var(--medium-grey-shadow));
+  background-size:6px 6px;
+}
